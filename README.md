@@ -9,7 +9,11 @@ From the [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification):
 
 ## Project Status
 
-As of the 1.0.0 release, this description is considered **stable** and generally available.
+As of the 0.1.0 release, this description is considered **stable** and generally available.
+
+## Contributing
+
+See [CONTRIBUTING.md](/CONTRIBUTING.md) for more details.
 
 ## License
 
