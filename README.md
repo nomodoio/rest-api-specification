@@ -1,4 +1,4 @@
-# rest-api-specification
+# nomodo.io rest-api-specification
 This repository contains OpenAPI descriptions for nomodo.io REST API.
 
 ## What is OpenAPI?
