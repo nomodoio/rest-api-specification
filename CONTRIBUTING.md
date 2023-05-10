@@ -28,7 +28,7 @@ All types of contributions are encouraged and valued. See the [Table of Contents
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the
-[nomodo rest-api-specification Code of Conduct](https://github.com/nomodoio/rest-api-specificationblob/master/CODE_OF_CONDUCT.md).
+[nomodo rest-api-specification Code of Conduct](/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report unacceptable behavior
 to .
 
