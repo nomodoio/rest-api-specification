@@ -64,6 +64,20 @@ paths:
       security:
         - Authorization: []
   /apps:
+    get:
+      tags:
+        - apps
+      summary: Get all created apps
+      description: Returns all created apps with basic info about. 
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/AllApps'
+      security:
+        - Authorization: []
     post:
       tags:
         - apps
@@ -84,9 +98,288 @@ paths:
                 $ref: '#/components/schemas/App'
       security:
         - Authorization: []
+  /apps/{customerId}:
+    get:
+      tags:
+        - apps
+      summary: Get all apps by customer
+      description: Returns all apps by customer ID.
+      parameters:
+        - name: customerId
+          in: path
+          description: customer id
+          required: true
+          schema:
+            type: string
+            example: 11112-sd-222-sddd
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerApp'
+        '404':
+          description: customer not found
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  customerId:
+                    type: string
+  /apps/{appId}:
+    get:
+      tags:
+        - apps
+      summary: Get app info
+      description: Returns detail info about app by app ID.
+      parameters:
+        - name: appId
+          in: path
+          description: app id
+          required: true
+          schema:
+            type: string
+            example: 11112-sd-222-sddd
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/App'
+        '404':
+          description: app not found
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  appId:
+                    type: string
+    put:
+      tags:
+        - apps
+      summary: Update app info
+      description: Update info by app ID.
+      requestBody:
+        description: Spec of created app.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/App"
+      parameters:
+        - name: appId
+          in: path
+          description: app id
+          required: true
+          schema:
+            type: string
+            example: 11112-sd-222-sddd
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                description: new saved app info
+                type: array
+                items:
+                  $ref: '#/components/schemas/App'
+        '404':
+          description: app not found
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  appId:
+                    type: string
+    delete:
+      tags:
+        - apps
+      summary: Delete app
+      description: Delete one app by app ID.
+      parameters:
+        - name: appId
+          in: path
+          description: app id
+          required: true
+          schema:
+            type: string
+            example: 11112-sd-222-sddd
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        '404':
+          description: app not found
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+  /billing:
+    post:
+      tags:
+        - billing
+      summary: Billing report.
+      description: Create an invoicing overview for the required period.
+      requestBody:
+        description: Specification of billing overview.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BillingResponse'
+      security:
+        - Authorization: []
+  /billing/{customerId}:
+    post:
+      tags:
+        - billing
+      summary: Get billing report by customer.
+      description: Create invoicing overview for the required customer and required perifod.
+      parameters:
+        - name: customerId
+          in: path
+          description: id customer
+          required: true
+          schema:
+            type: string
+            example: 11112-sd-222-sddd
+      requestBody:
+        description: Specification of billing overview.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BillingByCustomerResponse'
+        '404':
+          description: customer not found
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  customerId:
+                    type: string
 
 components:
   schemas:
+    BillingAppDetail:
+      type: object
+      properties:
+        appId:
+          type: string
+          example: asss-ddd-wwwwww-ddddd
+          description: ID of app/instance
+        appType:
+          type: string
+          example: grav
+          description: ID of application type
+        price:
+          type: number
+          format: float
+          example: 20.10
+        currency:
+          type: string
+          enum:
+            - czk
+            - usd
+            - eur
+          example: usd
+    BillingByCustomerResponse:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+        apps:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingAppDetail'
+        total:
+          type: number
+          format: float
+          example: 234.40
+          description: sum of all apps
+    BillingResponse:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+        customer:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of customers
+            apps:
+              type: array
+              items:
+                $ref: "#/components/schemas/BillingAppDetail"
+            total:
+              type: number
+              format: float
+              example: 234.40
+              description: sum of all apps
+        total:
+          type: number
+          format: float
+          example: 234.40
+          description: sum of all apps of all customers
+    BillingRequest:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+        customerId:
+          type: string
+          description: ID of customer
+      required:
+        - from
+        - to
     AppType:
       type: object
       properties:
@@ -96,7 +389,7 @@ components:
         name:
           type: string
           example: Grav CMS
-        versions:
+    versions:
           type: array
           items:
             type: string
@@ -104,12 +397,19 @@ components:
     App:
       type: object
       properties:
+        customerId:
+          type: string
+          description: ID of owner/customer
         appId:
           type: string
           example: zaseeed13ss
         createdAt:
           type: string
           format: date-time
+        type:
+          type: string
+          description: type ID
+          example: grav
         state:
           type: string
           description: Application state
@@ -118,6 +418,55 @@ components:
             - stopped
             - paused
             - destroyed
+        price:
+          type: number
+          format: float
+          description: price of app
+          example: 10.90
+        currency:
+          type: string
+          enum:
+            - czk
+            - usd
+            - eur
+          example: usd
+    CustomerApp:
+      type: object
+      properties:
+        appId:
+          type: string
+          example: zaseeed13ss
+        createdAt:
+          type: string
+          format: date-time
+        type:
+          type: string
+          description: type ID
+          example: grav
+        state:
+          type: string
+          description: Application state
+          enum:
+            - running
+            - stopped
+            - paused
+            - destroyed
+        price:
+          type: number
+          format: float
+          description: price of app
+          example: 10.90
+        currency:
+          type: string
+          enum:
+            - czk
+            - usd
+            - eur
+          example: usd
+    AllApps:
+      type: array
+      items:
+        $ref: "#/components/schemas/App"
     CreateAppRequest:
       type: object
       properties:
@@ -129,7 +478,7 @@ components:
           description: version of app
           type: string
           example: 1.2.3
-        ownerId:
+        customerId:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
