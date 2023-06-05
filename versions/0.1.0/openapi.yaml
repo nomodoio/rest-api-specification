@@ -482,6 +482,29 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    WordPress:
+      type: object
+      properties:
+        url:
+          type: string
+          description: url of wordpress app
+          example: https://pepa.nomodo.app
+        phpmyadminurl:
+          type: string
+          description: url of db web client (PHPMyAdmin)
+          example: https://pepa-pma.nomodo.app
+        dbuser:
+          type: string
+          description: db user name
+          example: root
+        dbpassword:
+          type: string
+          description: password for db user
+          example: ss12ssdx#wwwAs
+        dbname:
+          type: string
+          description: db name for wordpess app
+          example: wordpress
   securitySchemes:
     Authorization:
       type: apiKey
