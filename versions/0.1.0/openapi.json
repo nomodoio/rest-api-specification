@@ -372,6 +372,103 @@
         }
       }
     },
+    "/apps/{appId}/{action}": {
+      "post": {
+        "tags": [
+          "apps"
+        ],
+        "summary": "App actions.",
+        "description": "Call cpecific action on app. Change app state.",
+        "parameters": [
+          {
+            "name": "appId",
+            "in": "path",
+            "description": "id of app",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "d9c6a3eb-f0d7-4f20-83f3-1ba2451892a6"
+            }
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "description": "action name",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "start",
+                "stop",
+                "restart",
+                "drop"
+              ],
+              "example": "stop"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful action",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActtionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request (invalid acton)",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "example": "drum"
+                    },
+                    "appId": {
+                      "type": "string",
+                      "example": "d9c6a3eb-f0d7-4f20-83f3-1ba2451892a6"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "INVALID_ACTION"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "appId NOT_FOUND",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "action": {
+                      "type": "string",
+                      "example": "stop"
+                    },
+                    "appId": {
+                      "type": "string",
+                      "example": "11233"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "NOT_FOUND"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/billing": {
       "post": {
         "tags": [
@@ -756,6 +853,38 @@
             "type": "string",
             "description": "db name for wordpess app",
             "example": "wordpress"
+          }
+        }
+      },
+      "ActtionResponse": {
+        "type": "object",
+        "properties": {
+          "appId": {
+            "type": "string",
+            "description": "id of app",
+            "example": "d9c6a3eb-f0d7-4f20-83f3-1ba2451892a6"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "start",
+              "stop",
+              "restart",
+              "drop"
+            ],
+            "description": "action name",
+            "example": "stop"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "started",
+              "stopped",
+              "restarted",
+              "dropped"
+            ],
+            "description": "new status of application",
+            "example": "stopped"
           }
         }
       }
