@@ -21,6 +21,8 @@ tags:
     description: Everything about apps.
   - name: billing
     description: Everything about inovices and billing.
+  - name: support
+    description: Issues management.
 
 paths:
   /apptypes:
@@ -162,6 +164,8 @@ paths:
                 properties:
                   appId:
                     type: string
+      security:
+        - Authorization: []
     put:
       tags:
         - apps
@@ -200,6 +204,8 @@ paths:
                 properties:
                   appId:
                     type: string
+      security:
+        - Authorization: []
     delete:
       tags:
         - apps
@@ -232,6 +238,8 @@ paths:
                 properties:
                   id:
                     type: string
+      security:
+        - Authorization: []
   /apps/{appId}/{action}:
     post:
       tags:
@@ -297,6 +305,35 @@ paths:
                   error:
                     type: string
                     example: NOT_FOUND
+      security:
+        - Authorization: []
+  /support:
+    post:
+      tags:
+        - support
+      summary: Create new issue.
+      description: Create new task in nomodo support dashboard.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  IssueID:
+                    type: string
+        '400':
+          description: invalid api key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      security:
+        - Authorization: []
   /billing:
     post:
       tags:
