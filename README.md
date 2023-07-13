@@ -21,4 +21,4 @@ nomodoio/rest-api-description is licensed under the [MIT license](./LICENSE.md)
 
 ## Contact
 
-You may contact [josef@nomdo.io](mailto:josef@nomodo.io) with any questions related to this repository.
+You may contact [josef@nomodo.io](mailto:josef@nomodo.io) with any questions related to this repository.
