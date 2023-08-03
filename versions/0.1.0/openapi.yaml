@@ -584,6 +584,43 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    Elasticsearch:
+      type: object
+      properties:
+        Elastic:
+          type: object
+          properties:
+            host:
+              type: string
+              description: ip or host of Elasic server
+              example: "12.233.17.22"
+            port:
+              type: number
+              description: port of Elastic server
+              example: 1234
+            user:
+              type: string
+              description: Elastic server user
+              example: root
+            password:
+              type: string
+              description: user password for Elastic
+              example: dsado233@dsadDqw
+        Kibana:
+          type: object
+          properties:
+            url:
+              type: string
+              description: Kibana url
+              example: https://kibana-1.nomodo.io
+            user:
+              type: string
+              description: Kibana user
+              example: root
+            password:
+              type: string
+              description: user password for Kibana
+              example: dsado233@dsadDqw
     MySQL:
       type: object
       properties:
