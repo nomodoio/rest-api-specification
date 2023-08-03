@@ -584,6 +584,29 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    MariaDB:
+      type: object
+      properties:
+        host:
+          type: string
+          description: ip or hostname of MariaDB server
+          example: "12.233.17.22"
+        port:
+          type: number
+          description: port of MariaDB server
+          example: 2233
+        user:
+          type: string
+          description: user name for MariaDB
+          example: dasdas23DDxls2
+        password:
+          type: string
+          description: password for MariaDB
+          example: dasdas23DDxls2
+        admin:
+          type: string
+          description: URL of MariaDB web client
+          example: https://mariadb-1.nomodo.io
     MongoDB:
       type: object
       properties:
