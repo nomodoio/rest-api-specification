@@ -584,6 +584,21 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    MedusaJS:
+      type: object
+      properties:
+        url:
+          type: string
+          description: MedusaJS URL
+          example: https://medusajs-1.nomodo.io
+        user:
+          type: string
+          description: admin user name for MedusaJS
+          example: admin
+        password:
+          type: string
+          description: user password
+          example: dasoie22l##dasd
     MediaWiki:
       type: object
       properties:
