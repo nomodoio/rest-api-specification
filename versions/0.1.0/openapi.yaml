@@ -584,6 +584,29 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    MySQL:
+      type: object
+      properties:
+        host:
+          type: string
+          description: ip or hostname of MySQL server
+          example: "12.233.17.22"
+        port:
+          type: number
+          description: port of MySQL server
+          example: 2233
+        user:
+          type: string
+          description: user name for MySQL
+          example: dasdas23DDxls2
+        password:
+          type: string
+          description: password for MySQL
+          example: dasdas23DDxls2
+        admin:
+          type: string
+          description: URL of MySQL web client
+          example: https://mysql-1.nomodo.io
     MariaDB:
       type: object
       properties:
