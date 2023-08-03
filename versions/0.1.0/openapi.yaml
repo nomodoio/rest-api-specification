@@ -584,6 +584,13 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    Grav:
+      type: object
+      properties:
+        url:
+          type: string
+          description: url of new grav app
+          example: https://grav-1.nomodo.io
     RabbitMQ:
       type: object
       properties:
