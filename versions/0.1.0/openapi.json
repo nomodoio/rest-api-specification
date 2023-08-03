@@ -163,6 +163,93 @@
         ]
       }
     },
+    "/apps/async": {
+      "post": {
+        "tags": [
+          "apps"
+        ],
+        "summary": "Create new app async way.",
+        "description": "Start async app creation process.",
+        "requestBody": {
+          "description": "Spec of created app.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAppAsyncRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppAsync"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/apps/async/{jobid}": {
+      "get": {
+        "tags": [
+          "apps"
+        ],
+        "summary": "Get job status.",
+        "description": "Returns status of creating new app.",
+        "parameters": [
+          {
+            "name": "jobid",
+            "in": "path",
+            "description": "jobId returned by POST /apps/async",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "dedc966c-b270-4fcd-87bd-b2aa76861498"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobStatus"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "job not found",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jobid": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/apps/{customerId}": {
       "get": {
         "tags": [
@@ -780,6 +867,31 @@
           "1.3.4"
         ]
       },
+      "AppAsync": {
+        "type": "object",
+        "properties": {
+          "jobid": {
+            "type": "string",
+            "description": "uuid of new create job",
+            "example": "735835b7-89a9-4c45-be88-f3fd2248d1c9"
+          },
+          "appid": {
+            "type": "string",
+            "description": "id of new created app",
+            "example": "c10dfb47-e62d-4b88-9bcb-5f14c6b3fa57"
+          },
+          "apptype": {
+            "type": "string",
+            "description": "type od new app",
+            "example": "grav"
+          },
+          "appversion": {
+            "type": "string",
+            "description": "version of new app",
+            "example": "1.2.3"
+          }
+        }
+      },
       "App": {
         "type": "object",
         "properties": {
@@ -896,6 +1008,351 @@
           }
         }
       },
+      "CreateAppAsyncRequest": {
+        "type": "object",
+        "properties": {
+          "typeId": {
+            "type": "string",
+            "description": "id of app type",
+            "example": "grav"
+          },
+          "version": {
+            "description": "version of app",
+            "type": "string",
+            "example": "1.2.3"
+          },
+          "customerId": {
+            "type": "string",
+            "description": "owner ID",
+            "example": "a10f9bab-24c1-47a0-a6ff-1b24270f19b9"
+          },
+          "callback": {
+            "type": "object",
+            "properties": {
+              "method": {
+                "type": "string",
+                "description": "http method of callback",
+                "example": "POST"
+              },
+              "url": {
+                "type": "string",
+                "description": "url of callback",
+                "example": "https://api.example.com/callback/222c66ff-ed51-4e0c-8c6c-348fbb17d61a"
+              },
+              "auth": {
+                "type": "object",
+                "properties": {
+                  "headername": {
+                    "type": "string",
+                    "description": "name of header for authorization. if will be empty will not used.",
+                    "example": "Authorization"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "authorization token",
+                    "example": "dsa3edsads12sdafsfsqwe12df"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "MedusaJS": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "MedusaJS URL",
+            "example": "https://medusajs-1.nomodo.io"
+          },
+          "user": {
+            "type": "string",
+            "description": "admin user name for MedusaJS",
+            "example": "admin"
+          },
+          "password": {
+            "type": "string",
+            "description": "user password",
+            "example": "dasoie22l##dasd"
+          }
+        }
+      },
+      "MediaWiki": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "new MediaWiki app url",
+            "example": "https://mediawiki-1.nomodo.io"
+          },
+          "DB": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "type of mediawiki db",
+                "example": "MariaDB"
+              },
+              "host": {
+                "type": "string",
+                "description": "ip or host of mediawiki db",
+                "example": "12.33.22.11:12234"
+              },
+              "name": {
+                "type": "string",
+                "description": "mediawiki database name",
+                "example": "mediawiki-1"
+              },
+              "user": {
+                "type": "string",
+                "description": "db user name",
+                "example": "root"
+              },
+              "password": {
+                "type": "string",
+                "description": "password for db user",
+                "example": "dWas12#dfrtff"
+              }
+            }
+          }
+        }
+      },
+      "Grav": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "url of new grav app",
+            "example": "https://grav-1.nomodo.io"
+          }
+        }
+      },
+      "RabbitMQ": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "ip or hostname of RabbitMQ server",
+            "example": "12.233.17.22"
+          },
+          "port": {
+            "type": "number",
+            "description": "port of RabbitMQ server",
+            "example": 2233
+          },
+          "user": {
+            "type": "string",
+            "description": "user name for RabbitMQ",
+            "example": "dasdas23DDxls2"
+          },
+          "password": {
+            "type": "string",
+            "description": "password for RabbitMQ",
+            "example": "dasdas23DDxls2"
+          },
+          "admin": {
+            "type": "string",
+            "description": "URL of RabbitMQ web client",
+            "example": "https://rabbitmq-1.nomodo.io"
+          }
+        }
+      },
+      "PostgreSQL": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "ip or hostname of PostgreSQL server",
+            "example": "12.233.17.22"
+          },
+          "port": {
+            "type": "number",
+            "description": "port of PostgreSQL server",
+            "example": 2233
+          },
+          "user": {
+            "type": "string",
+            "description": "user name for PostgreSQL",
+            "example": "dasdas23DDxls2"
+          },
+          "password": {
+            "type": "string",
+            "description": "password for PostgreSQL",
+            "example": "dasdas23DDxls2"
+          },
+          "admin": {
+            "type": "string",
+            "description": "URL of PostgreSQL web client",
+            "example": "https://postgresql-1.nomodo.io"
+          }
+        }
+      },
+      "Elasticsearch": {
+        "type": "object",
+        "properties": {
+          "Elastic": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "description": "ip or host of Elasic server",
+                "example": "12.233.17.22"
+              },
+              "port": {
+                "type": "number",
+                "description": "port of Elastic server",
+                "example": 1234
+              },
+              "user": {
+                "type": "string",
+                "description": "Elastic server user",
+                "example": "root"
+              },
+              "password": {
+                "type": "string",
+                "description": "user password for Elastic",
+                "example": "dsado233@dsadDqw"
+              }
+            }
+          },
+          "Kibana": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "Kibana url",
+                "example": "https://kibana-1.nomodo.io"
+              },
+              "user": {
+                "type": "string",
+                "description": "Kibana user",
+                "example": "root"
+              },
+              "password": {
+                "type": "string",
+                "description": "user password for Kibana",
+                "example": "dsado233@dsadDqw"
+              }
+            }
+          }
+        }
+      },
+      "MySQL": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "ip or hostname of MySQL server",
+            "example": "12.233.17.22"
+          },
+          "port": {
+            "type": "number",
+            "description": "port of MySQL server",
+            "example": 2233
+          },
+          "user": {
+            "type": "string",
+            "description": "user name for MySQL",
+            "example": "dasdas23DDxls2"
+          },
+          "password": {
+            "type": "string",
+            "description": "password for MySQL",
+            "example": "dasdas23DDxls2"
+          },
+          "admin": {
+            "type": "string",
+            "description": "URL of MySQL web client",
+            "example": "https://mysql-1.nomodo.io"
+          }
+        }
+      },
+      "MariaDB": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "ip or hostname of MariaDB server",
+            "example": "12.233.17.22"
+          },
+          "port": {
+            "type": "number",
+            "description": "port of MariaDB server",
+            "example": 2233
+          },
+          "user": {
+            "type": "string",
+            "description": "user name for MariaDB",
+            "example": "dasdas23DDxls2"
+          },
+          "password": {
+            "type": "string",
+            "description": "password for MariaDB",
+            "example": "dasdas23DDxls2"
+          },
+          "admin": {
+            "type": "string",
+            "description": "URL of MariaDB web client",
+            "example": "https://mariadb-1.nomodo.io"
+          }
+        }
+      },
+      "MongoDB": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "ip or hostname of MongoDB server",
+            "example": "12.233.17.22"
+          },
+          "port": {
+            "type": "number",
+            "description": "port of MongoDB server",
+            "example": 2233
+          },
+          "user": {
+            "type": "string",
+            "description": "user name for MongoDB",
+            "example": "dasdas23DDxls2"
+          },
+          "password": {
+            "type": "string",
+            "description": "password for Redis",
+            "example": "dasdas23DDxls2"
+          },
+          "admin": {
+            "type": "string",
+            "description": "URL of MongoDB web client",
+            "example": "https://mongodb-1.nomodo.io"
+          }
+        }
+      },
+      "Redis": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "ip or hostname of Redis server",
+            "example": "12.233.17.22"
+          },
+          "port": {
+            "type": "number",
+            "description": "port of Redis server",
+            "example": 2233
+          },
+          "password": {
+            "type": "string",
+            "description": "password for Redis",
+            "example": "dasdas23DDxls2"
+          },
+          "admin": {
+            "type": "string",
+            "description": "URL of Redis web client",
+            "example": "https://redis-1.nomodo.io"
+          }
+        }
+      },
       "WordPress": {
         "type": "object",
         "properties": {
@@ -957,6 +1414,37 @@
             "example": "stopped"
           }
         }
+      },
+      "JobStatus": {
+        "type": "object",
+        "properties": {
+          "jobid": {
+            "type": "string",
+            "description": "id of job",
+            "example": "dedc966c-b270-4fcd-87bd-b2aa76861498"
+          },
+          "appid": {
+            "type": "string",
+            "description": "id of new app",
+            "example": "8c756b5e-eed4-4d12-8550-9708ecd539f5"
+          },
+          "status": {
+            "type": "string",
+            "description": "info about job",
+            "enum": [
+              "accepted",
+              "started",
+              "runs",
+              "done"
+            ]
+          },
+          "ts": {
+            "type": "string",
+            "format": "date-time",
+            "description": "timestamp of job status info",
+            "example": "2023-07-21T17:32:28Z"
+          }
+        }
       }
     },
     "securitySchemes": {
@@ -968,4 +1456,3 @@
     }
   }
 }
-
