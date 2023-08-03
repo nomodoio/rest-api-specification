@@ -584,6 +584,29 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    RabbitMQ:
+      type: object
+      properties:
+        host:
+          type: string
+          description: ip or hostname of RabbitMQ server
+          example: "12.233.17.22"
+        port:
+          type: number
+          description: port of RabbitMQ server
+          example: 2233
+        user:
+          type: string
+          description: user name for RabbitMQ
+          example: dasdas23DDxls2
+        password:
+          type: string
+          description: password for RabbitMQ
+          example: dasdas23DDxls2
+        admin:
+          type: string
+          description: URL of RabbitMQ web client
+          example: https://rabbitmq-1.nomodo.io
     PostgreSQL:
       type: object
       properties:
