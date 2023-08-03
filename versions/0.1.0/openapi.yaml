@@ -584,6 +584,25 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    Redis:
+      type: object
+      properties:
+        host:
+          type: string
+          description: ip or hostname of Redis server
+          example: "12.233.17.22"
+        port:
+          type: number
+          description: port of Redis server
+          example: 2233
+        password:
+          type: string
+          description: password for Redis
+          example: dasdas23DDxls2
+        admin:
+          type: string
+          description: URL of Redis web client
+          example: https://redis-1.nomodo.io
     WordPress:
       type: object
       properties:
