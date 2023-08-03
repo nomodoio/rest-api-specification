@@ -584,6 +584,29 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    MongoDB:
+      type: object
+      properties:
+        host:
+          type: string
+          description: ip or hostname of MongoDB server
+          example: "12.233.17.22"
+        port:
+          type: number
+          description: port of MongoDB server
+          example: 2233
+        user:
+          type: string
+          description: user name for MongoDB
+          example: dasdas23DDxls2
+        password:
+          type: string
+          description: password for Redis
+          example: dasdas23DDxls2
+        admin:
+          type: string
+          description: URL of MongoDB web client
+          example: https://mongodb-1.nomodo.io
     Redis:
       type: object
       properties:
