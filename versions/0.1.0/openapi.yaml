@@ -584,6 +584,36 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+    MediaWiki:
+      type: object
+      properties:
+        url:
+          type: string
+          description: new MediaWiki app url
+          example: https://mediawiki-1.nomodo.io
+        DB:
+          type: object
+          properties:
+            type:
+              type: string
+              description: type of mediawiki db
+              example: MariaDB
+            host:
+              type: string
+              description: ip or host of mediawiki db
+              example: "12.33.22.11:12234"
+            name:
+              type: string
+              description: mediawiki database name
+              example: mediawiki-1
+            user:
+              type: string
+              description: db user name 
+              example: root
+            password:
+              type: string
+              description: password for db user
+              example: dWas12#dfrtff
     Grav:
       type: object
       properties:
