@@ -544,7 +544,7 @@ components:
         name:
           type: string
           example: Grav CMS
-    versions:
+        versions:
           type: array
           items:
             type: string
@@ -580,7 +580,7 @@ components:
         createdAt:
           type: string
           format: date-time
-        type:
+        apptype:
           type: string
           description: type ID
           example: grav
