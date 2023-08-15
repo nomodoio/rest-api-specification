@@ -33,6 +33,10 @@
     {
       "name": "support",
       "description": "Issues management."
+    },
+    {
+      "name": "jobs",
+      "description": "Jobs management"
     }
   ],
   "paths": {
@@ -41,7 +45,7 @@
         "tags": [
           "apptypes"
         ],
-        "summary": "Get all application types.",
+        "summary": "Gets all application types.",
         "description": "Returns all provided types of application.",
         "responses": {
           "200": {
@@ -70,7 +74,7 @@
         "tags": [
           "apptypes"
         ],
-        "summary": "Get app type by ID.",
+        "summary": "Gets app type by ID.",
         "description": "Returns only one type by ID.",
         "parameters": [
           {
@@ -108,7 +112,7 @@
         "tags": [
           "apps"
         ],
-        "summary": "Get all created apps",
+        "summary": "Gets all created apps",
         "description": "Returns all created apps with basic info about.",
         "responses": {
           "200": {
@@ -199,16 +203,16 @@
         ]
       }
     },
-    "/apps/async/{jobid}": {
+    "/apps/async/{jobId}": {
       "get": {
         "tags": [
           "apps"
         ],
-        "summary": "Get job status.",
+        "summary": "Gets job status.",
         "description": "Returns status of creating new app.",
         "parameters": [
           {
-            "name": "jobid",
+            "name": "jobId",
             "in": "path",
             "description": "jobId returned by POST /apps/async",
             "required": true,
@@ -226,7 +230,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/JobStatus"
+                    "$ref": "#/components/schemas/JobStatusTS"
                   }
                 }
               }
@@ -239,7 +243,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "jobid": {
+                    "jobId": {
                       "type": "string"
                     }
                   }
@@ -247,7 +251,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
       }
     },
     "/apps/{customerId}": {
@@ -298,7 +307,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
       }
     },
     "/apps/{appId}": {
@@ -306,7 +320,7 @@
         "tags": [
           "apps"
         ],
-        "summary": "Get app info",
+        "summary": "Gets app info",
         "description": "Returns detail info about app by app ID.",
         "parameters": [
           {
@@ -580,6 +594,150 @@
         ]
       }
     },
+    "/jobs": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Gets all runnig jobs.",
+        "description": "View of running tasks.",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllJobs"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/jobs/{jobId}": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Gets info about job  by jobId.",
+        "description": "Gets detailed information by ID.",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "description": "jobId returned by POST /apps/async",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "dedc966c-b270-4fcd-87bd-b2aa76861498"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobStatusTS"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "job not found",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jobId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Drops job.",
+        "description": "Drops created job by jobId.",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "description": "jobId returned by POST /apps/async",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "dedc966c-b270-4fcd-87bd-b2aa76861498"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jobId": {
+                      "type": "string",
+                      "description": "dropped job id",
+                      "example": "dedc966c-b270-4fcd-87bd-b2aa76861498"
+                    },
+                    "appId": {
+                      "type": "string",
+                      "description": "app ID created by jobId",
+                      "example": "43d63863-fe32-43f3-a649-5c047edfa9d8"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "job not found",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jobId": {
+                      "type": "string",
+                      "description": "jobId from DELETE request",
+                      "example": "dedc966c-b270-4fcd-87bd-b2aa76861498"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
     "/support": {
       "post": {
         "tags": [
@@ -670,7 +828,7 @@
         "tags": [
           "billing"
         ],
-        "summary": "Get billing report by customer.",
+        "summary": "Gets billing report by customer.",
         "description": "Create invoicing overview for the required customer and required perifod.",
         "parameters": [
           {
@@ -723,7 +881,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
       }
     }
   },
@@ -1423,6 +1586,43 @@
             "description": "id of job",
             "example": "dedc966c-b270-4fcd-87bd-b2aa76861498"
           },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "job creation timestamp",
+            "example": "2023-07-21T17:32:28Z"
+          },
+          "appId": {
+            "type": "string",
+            "description": "id of new app",
+            "example": "8c756b5e-eed4-4d12-8550-9708ecd539f5"
+          },
+          "status": {
+            "type": "string",
+            "description": "info about job",
+            "enum": [
+              "accepted",
+              "started",
+              "runs",
+              "done"
+            ]
+          }
+        }
+      },
+      "JobStatusTS": {
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "description": "id of job",
+            "example": "dedc966c-b270-4fcd-87bd-b2aa76861498"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "job creation timestamp",
+            "example": "2023-07-21T17:32:28Z"
+          },
           "appId": {
             "type": "string",
             "description": "id of new app",
@@ -1443,6 +1643,23 @@
             "format": "date-time",
             "description": "timestamp of job status info",
             "example": "2023-07-21T17:32:28Z"
+          }
+        }
+      },
+      "AllJobs": {
+        "type": "object",
+        "properties": {
+          "ts": {
+            "type": "string",
+            "format": "date-time",
+            "description": "timestamp of job status info",
+            "example": "2023-07-21T17:32:28Z"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobStatus"
+            }
           }
         }
       }

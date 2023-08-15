@@ -1,4 +1,5 @@
 openapi: 3.0.3
+
 info:
   title: nomodo.io - OpenAPI 3.0
   description: |-
@@ -23,13 +24,16 @@ tags:
     description: Everything about inovices and billing.
   - name: support
     description: Issues management.
+  - name: jobs
+    description: Jobs management
 
 paths:
+
   /apptypes:
     get:
       tags: 
         - apptypes
-      summary: Get all application types.
+      summary: Gets all application types.
       description: Returns all provided types of application.
       responses:
         '200':
@@ -42,11 +46,12 @@ paths:
                   $ref: '#/components/schemas/AppType'
       security:
         - Authorization: []
+  
   /apptypes/{id}:
     get:
       tags: 
         - apptypes
-      summary: Get app type by ID.
+      summary: Gets app type by ID.
       description: Returns only one type by ID.
       parameters:
         - name: id
@@ -65,11 +70,12 @@ paths:
                 $ref: '#/components/schemas/AppType'
       security:
         - Authorization: []
+  
   /apps:
     get:
       tags:
         - apps
-      summary: Get all created apps
+      summary: Gets all created apps
       description: Returns all created apps with basic info about. 
       responses:
         '200':
@@ -100,6 +106,7 @@ paths:
                 $ref: '#/components/schemas/App'
       security:
         - Authorization: []
+  
   /apps/async:
     post:
       tags:
@@ -121,14 +128,15 @@ paths:
                 $ref: '#/components/schemas/AppAsync'
       security:
         - Authorization: []
-  /apps/async/{jobid}:
+  
+  /apps/async/{jobId}:
     get:
       tags:
         - apps
-      summary: Get job status.
+      summary: Gets job status.
       description: Returns status of creating new app.
       parameters:
-        - name: jobid
+        - name: jobId
           in: path
           description: jobId returned by POST /apps/async
           required: true
@@ -143,7 +151,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/JobStatus'
+                  $ref: '#/components/schemas/JobStatusTS'
         '404':
           description: job not found
           content:
@@ -151,8 +159,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  jobid:
+                  jobId:
                     type: string
+      security:
+        - Authorization: []
+  
   /apps/{customerId}:
     get:
       tags:
@@ -185,11 +196,14 @@ paths:
                 properties:
                   customerId:
                     type: string
+      security:
+        - Authorization: []
+  
   /apps/{appId}:
     get:
       tags:
         - apps
-      summary: Get app info
+      summary: Gets app info
       description: Returns detail info about app by app ID.
       parameters:
         - name: appId
@@ -293,6 +307,7 @@ paths:
                     type: string
       security:
         - Authorization: []
+  
   /apps/{appId}/{action}:
     post:
       tags:
@@ -360,6 +375,99 @@ paths:
                     example: NOT_FOUND
       security:
         - Authorization: []
+
+  /jobs:
+    get:
+      tags:
+        - jobs
+      summary: Gets all runnig jobs.
+      description: View of running tasks.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/AllJobs'
+      security:
+        - Authorization: []
+
+  /jobs/{jobId}:
+    get:
+      tags:
+        - jobs
+      summary: Gets info about job  by jobId.
+      description: Gets detailed information by ID.
+      parameters:
+        - name: jobId
+          in: path
+          description: jobId returned by POST /apps/async
+          required: true
+          schema:
+            type: string
+            example: dedc966c-b270-4fcd-87bd-b2aa76861498
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/JobStatusTS'
+        '404':
+          description: job not found
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+      security:
+        - Authorization: []
+
+    delete:
+      tags:
+        - jobs
+      summary: Drops job.
+      description: Drops created job by jobId.
+      parameters:
+        - name: jobId
+          in: path
+          description: jobId returned by POST /apps/async
+          required: true
+          schema:
+            type: string
+            example: dedc966c-b270-4fcd-87bd-b2aa76861498
+      responses:
+        '200':
+          description: successful operation
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                    description: dropped job id
+                    example: dedc966c-b270-4fcd-87bd-b2aa76861498
+                  appId:
+                    type: string
+                    description: app ID created by jobId
+                    example: 43d63863-fe32-43f3-a649-5c047edfa9d8
+        '404':
+          description: job not found
+          content:
+            aplication/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                    description: jobId from DELETE request
+                    example: dedc966c-b270-4fcd-87bd-b2aa76861498
+      security:
+        - Authorization: []
+
   /support:
     post:
       tags:
@@ -387,6 +495,7 @@ paths:
                     type: string
       security:
         - Authorization: []
+
   /billing:
     post:
       tags:
@@ -410,11 +519,12 @@ paths:
                   $ref: '#/components/schemas/BillingResponse'
       security:
         - Authorization: []
+
   /billing/{customerId}:
     post:
       tags:
         - billing
-      summary: Get billing report by customer.
+      summary: Gets billing report by customer.
       description: Create invoicing overview for the required customer and required perifod.
       parameters:
         - name: customerId
@@ -448,9 +558,13 @@ paths:
                 properties:
                   customerId:
                     type: string
+      security:
+        - Authorization: []
 
 components:
+
   schemas:
+
     BillingAppDetail:
       type: object
       properties:
@@ -473,6 +587,7 @@ components:
             - usd
             - eur
           example: usd
+
     BillingByCustomerResponse:
       type: object
       properties:
@@ -491,6 +606,7 @@ components:
           format: float
           example: 234.40
           description: sum of all apps
+
     BillingResponse:
       type: object
       properties:
@@ -520,6 +636,7 @@ components:
           format: float
           example: 234.40
           description: sum of all apps of all customers
+
     BillingRequest:
       type: object
       properties:
@@ -535,6 +652,7 @@ components:
       required:
         - from
         - to
+
     AppType:
       type: object
       properties:
@@ -549,6 +667,7 @@ components:
           items:
             type: string
           example: ["1.0.1", "1.3.4"]
+
     AppAsync:
       type: object
       properties:
@@ -568,6 +687,7 @@ components:
           type: string
           description: version of new app
           example: "1.2.3"
+
     App:
       type: object
       properties:
@@ -604,6 +724,7 @@ components:
             - usd
             - eur
           example: usd
+
     CustomerApp:
       type: object
       properties:
@@ -637,10 +758,12 @@ components:
             - usd
             - eur
           example: usd
+
     AllApps:
       type: array
       items:
         $ref: "#/components/schemas/App"
+
     CreateAppRequest:
       type: object
       properties:
@@ -656,6 +779,7 @@ components:
           type: string
           description: owner ID
           example: 1223-33ddd3-dsadas-dasds
+
     CreateAppAsyncRequest:
       type: object
       properties:
@@ -693,6 +817,7 @@ components:
                   type: string
                   description: authorization token
                   example: dsa3edsads12sdafsfsqwe12df
+
     MedusaJS:
       type: object
       properties:
@@ -708,6 +833,7 @@ components:
           type: string
           description: user password
           example: dasoie22l##dasd
+
     MediaWiki:
       type: object
       properties:
@@ -738,6 +864,7 @@ components:
               type: string
               description: password for db user
               example: dWas12#dfrtff
+
     Grav:
       type: object
       properties:
@@ -745,6 +872,7 @@ components:
           type: string
           description: url of new grav app
           example: https://grav-1.nomodo.io
+
     RabbitMQ:
       type: object
       properties:
@@ -768,6 +896,7 @@ components:
           type: string
           description: URL of RabbitMQ web client
           example: https://rabbitmq-1.nomodo.io
+
     PostgreSQL:
       type: object
       properties:
@@ -791,6 +920,7 @@ components:
           type: string
           description: URL of PostgreSQL web client
           example: https://postgresql-1.nomodo.io
+
     Elasticsearch:
       type: object
       properties:
@@ -828,6 +958,7 @@ components:
               type: string
               description: user password for Kibana
               example: dsado233@dsadDqw
+
     MySQL:
       type: object
       properties:
@@ -851,6 +982,7 @@ components:
           type: string
           description: URL of MySQL web client
           example: https://mysql-1.nomodo.io
+
     MariaDB:
       type: object
       properties:
@@ -874,6 +1006,7 @@ components:
           type: string
           description: URL of MariaDB web client
           example: https://mariadb-1.nomodo.io
+
     MongoDB:
       type: object
       properties:
@@ -897,6 +1030,7 @@ components:
           type: string
           description: URL of MongoDB web client
           example: https://mongodb-1.nomodo.io
+
     Redis:
       type: object
       properties:
@@ -916,6 +1050,7 @@ components:
           type: string
           description: URL of Redis web client
           example: https://redis-1.nomodo.io
+
     WordPress:
       type: object
       properties:
@@ -939,6 +1074,7 @@ components:
           type: string
           description: db name for wordpess app
           example: wordpress
+
     ActtionResponse:
       type: object
       properties:
@@ -964,6 +1100,7 @@ components:
             - dropped
           description: new status of application
           example: stopped
+
     JobStatus:
       type: object
       properties:
@@ -971,6 +1108,36 @@ components:
           type: string
           description: id of job
           example: dedc966c-b270-4fcd-87bd-b2aa76861498
+        createdAt:
+          type: string
+          format: date-time
+          description: job creation timestamp
+          example: "2023-07-21T17:32:28Z"
+        appId:
+          type: string
+          description: id of new app
+          example: 8c756b5e-eed4-4d12-8550-9708ecd539f5
+        status:
+          type: string
+          description: info about job
+          enum:
+            - accepted
+            - started
+            - runs
+            - done
+
+    JobStatusTS:
+      type: object
+      properties:
+        jobId:
+          type: string
+          description: id of job
+          example: dedc966c-b270-4fcd-87bd-b2aa76861498
+        createdAt:
+          type: string
+          format: date-time
+          description: job creation timestamp
+          example: "2023-07-21T17:32:28Z"
         appId:
           type: string
           description: id of new app
@@ -988,7 +1155,22 @@ components:
           format: date-time
           description: timestamp of job status info
           example: "2023-07-21T17:32:28Z"
+
+    AllJobs:
+      type: object
+      properties:
+        ts:
+          type: string
+          format: date-time
+          description: timestamp of job status info
+          example: "2023-07-21T17:32:28Z"
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobStatus'
+
   securitySchemes:
+
     Authorization:
       type: apiKey
       name: Authorization
