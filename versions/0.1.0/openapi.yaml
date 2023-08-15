@@ -237,7 +237,7 @@ paths:
           required: true
           schema:
             type: string
-            example: 11112-sd-222-sddd
+            example: 0ad71399-6764-488f-88dc-20ec3505c1bd
       responses:
         '200':
           description: successful operation
@@ -271,7 +271,7 @@ paths:
           required: true
           schema:
             type: string
-            example: 11112-sd-222-sddd
+            example: 0ad71399-6764-488f-88dc-20ec3505c1bd
       responses:
         '200':
           description: successful operation
@@ -423,7 +423,7 @@ paths:
           required: true
           schema:
             type: string
-            example: 11112-sd-222-sddd
+            example: 0ad71399-6764-488f-88dc-20ec3505c1bd
       requestBody:
         description: Specification of billing overview.
         content:
@@ -552,19 +552,19 @@ components:
     AppAsync:
       type: object
       properties:
-        jobid:
+        jobId:
           type: string
           description: uuid of new create job
           example: "735835b7-89a9-4c45-be88-f3fd2248d1c9"
-        appid:
+        appId:
           type: string
           description: id of new created app
           example: "c10dfb47-e62d-4b88-9bcb-5f14c6b3fa57"
-        apptype:
+        appType:
           type: string
           description: type od new app
           example: grav
-        appversion:
+        appVersion:
           type: string
           description: version of new app
           example: "1.2.3"
@@ -580,7 +580,7 @@ components:
         createdAt:
           type: string
           format: date-time
-        apptype:
+        appType:
           type: string
           description: type ID
           example: grav
@@ -613,7 +613,7 @@ components:
         createdAt:
           type: string
           format: date-time
-        type:
+        appType:
           type: string
           description: type ID
           example: grav
@@ -715,7 +715,7 @@ components:
           type: string
           description: new MediaWiki app url
           example: https://mediawiki-1.nomodo.io
-        DB:
+        db:
           type: object
           properties:
             type:
@@ -794,7 +794,7 @@ components:
     Elasticsearch:
       type: object
       properties:
-        Elastic:
+        elastic:
           type: object
           properties:
             host:
@@ -813,7 +813,7 @@ components:
               type: string
               description: user password for Elastic
               example: dsado233@dsadDqw
-        Kibana:
+        kibana:
           type: object
           properties:
             url:
@@ -923,19 +923,19 @@ components:
           type: string
           description: url of wordpress app
           example: https://pepa.nomodo.app
-        phpmyadminurl:
+        phpMyAdminUrl:
           type: string
           description: url of db web client (PHPMyAdmin)
           example: https://pepa-pma.nomodo.app
-        dbuser:
+        dbUser:
           type: string
           description: db user name
           example: root
-        dbpassword:
+        dbPassword:
           type: string
           description: password for db user
           example: ss12ssdx#wwwAs
-        dbname:
+        dbName:
           type: string
           description: db name for wordpess app
           example: wordpress
@@ -967,11 +967,11 @@ components:
     JobStatus:
       type: object
       properties:
-        jobid:
+        jobId:
           type: string
           description: id of job
           example: dedc966c-b270-4fcd-87bd-b2aa76861498
-        appid:
+        appId:
           type: string
           description: id of new app
           example: 8c756b5e-eed4-4d12-8550-9708ecd539f5
