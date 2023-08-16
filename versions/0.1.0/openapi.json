@@ -37,6 +37,10 @@
     {
       "name": "jobs",
       "description": "Jobs management"
+    },
+    {
+      "name": "priceplans",
+      "description": "Prices for apps"
     }
   ],
   "paths": {
@@ -95,6 +99,153 @@
               "aplication/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AppType"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "app type not found",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/priceplans": {
+      "get": {
+        "tags": [
+          "priceplans"
+        ],
+        "summary": "Gets pricing info.",
+        "description": "Returns all pricing plans.",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PricePlans"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/priceplans/{planId}": {
+      "get": {
+        "tags": [
+          "priceplans"
+        ],
+        "summary": "Get detail of pricing plan by plan ID.",
+        "description": "Returns one doc with price plan.",
+        "parameters": [
+          {
+            "name": "planId",
+            "in": "path",
+            "description": "id of price plan",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "f1487716-3848-4d7f-abad-2fdfdf3e6a83"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PricePlan"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "price plan not found",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "planId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/priceplans/apptype/{appTypeId}": {
+      "get": {
+        "tags": [
+          "priceplans"
+        ],
+        "summary": "Get all price plans by selected appTypeID.",
+        "description": "Returns all price plans by specific app type.",
+        "parameters": [
+          {
+            "name": "appTypeId",
+            "in": "path",
+            "description": "id of app type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "grav"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PricePlans"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "app type not found",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "appTypeId": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -1168,6 +1319,11 @@
             "type": "string",
             "description": "owner ID",
             "example": "1223-33ddd3-dsadas-dasds"
+          },
+          "pricePlanId": {
+            "type": "string",
+            "description": "id of price plan",
+            "example": "f1487716-3848-4d7f-abad-2fdfdf3e6a83"
           }
         }
       },
@@ -1188,6 +1344,11 @@
             "type": "string",
             "description": "owner ID",
             "example": "a10f9bab-24c1-47a0-a6ff-1b24270f19b9"
+          },
+          "pricePlanId": {
+            "type": "string",
+            "description": "id of price plan",
+            "example": "f1487716-3848-4d7f-abad-2fdfdf3e6a83"
           },
           "callback": {
             "type": "object",
@@ -1219,6 +1380,46 @@
               }
             }
           }
+        }
+      },
+      "PricePlan": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "unique if of price plan",
+            "example": "f1487716-3848-4d7f-abad-2fdfdf3e6a83"
+          },
+          "appType": {
+            "type": "string",
+            "description": "app type id",
+            "example": "grav"
+          },
+          "name": {
+            "type": "string",
+            "description": "name of price plan",
+            "example": "WordPress Basic"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "example": 20.1
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "czk",
+              "usd",
+              "eur"
+            ],
+            "example": "usd"
+          }
+        }
+      },
+      "PricePlans": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PricePlan"
         }
       },
       "MedusaJS": {
